@@ -1,1 +1,6 @@
-// Flows will be imported for their side effects in this file.
+import { config } from 'dotenv';
+config();
+
+import '@/ai/flows/suggest-fixes.ts';
+import '@/ai/flows/detect-language.ts';
+import '@/ai/flows/detect-errors.ts';
