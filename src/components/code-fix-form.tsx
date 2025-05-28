@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { CodeBlock } from '@/components/code-block';
 import { useToast } from '@/hooks/use-toast';
-import { UploadCloud, Copy, Download, Sparkles, Loader2, AlertTriangle } from 'lucide-react';
+import { UploadCloud, Copy, Download, Sparkles, Loader2, AlertTriangle, Wrench } from 'lucide-react';
 
 const FormSchema = z.object({
   code: z.string().min(1, "Code cannot be empty."),
@@ -45,6 +45,10 @@ export function CodeFixForm() {
         toast({ title: "File loaded", description: `${file.name} loaded successfully.` });
       };
       reader.readAsText(file);
+    }
+     // Reset file input to allow uploading the same file again
+    if (event.target) {
+      event.target.value = '';
     }
   };
 
@@ -105,62 +109,63 @@ export function CodeFixForm() {
 
 
   return (
-    <div className="container mx-auto py-8 px-4 space-y-8">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-3xl font-bold tracking-tight">CodeFix AI</CardTitle>
-          <CardDescription>
-            Enter your code snippet, and let our AI detect the language, find errors, and suggest corrections.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div>
-              <Label htmlFor="code-input" className="text-lg font-semibold mb-2 block">Your Code</Label>
-              <Textarea
-                id="code-input"
-                {...form.register("code")}
-                placeholder="Paste your code here or upload a file..."
-                className="min-h-[200px] font-mono text-sm p-3 rounded-md shadow-sm focus:ring-primary focus:border-primary"
-                aria-invalid={form.formState.errors.code ? "true" : "false"}
-              />
-              {form.formState.errors.code && (
-                <p className="text-sm text-destructive mt-1">{form.formState.errors.code.message}</p>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-2xl font-semibold flex items-center">
+          <Wrench className="mr-2 h-6 w-6 text-primary" /> CodeFix AI
+        </CardTitle>
+        <CardDescription>
+          Enter your code snippet, and let our AI detect the language, find errors, and suggest corrections.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <div>
+            <Label htmlFor="code-input" className="text-lg font-semibold mb-2 block">Your Code</Label>
+            <Textarea
+              id="code-input"
+              {...form.register("code")}
+              placeholder="Paste your code here or upload a file..."
+              className="min-h-[200px] font-mono text-sm p-3 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+              aria-invalid={form.formState.errors.code ? "true" : "false"}
+            />
+            {form.formState.errors.code && (
+              <p className="text-sm text-destructive mt-1">{form.formState.errors.code.message}</p>
+            )}
+          </div>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Button type="button" variant="outline" onClick={() => fileInputRef.current?.click()} className="w-full sm:w-auto">
+              <UploadCloud className="mr-2 h-4 w-4" /> Upload File
+            </Button>
+            <Input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileUpload}
+              className="hidden"
+              accept=".txt,.js,.py,.java,.cs,.cpp,.c,.html,.css,.ts,.tsx,.json,.md,.*"
+            />
+            <Button type="submit" disabled={isLoading} className="w-full sm:w-auto flex-grow sm:flex-grow-0">
+              {isLoading ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Sparkles className="mr-2 h-4 w-4" />
               )}
-            </div>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button type="button" variant="outline" onClick={() => fileInputRef.current?.click()} className="w-full sm:w-auto">
-                <UploadCloud className="mr-2 h-4 w-4" /> Upload File
-              </Button>
-              <Input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileUpload}
-                className="hidden"
-                accept=".txt,.js,.py,.java,.cs,.cpp,.c,.html,.css,.ts,.tsx,.json,.md"
-              />
-              <Button type="submit" disabled={isLoading} className="w-full sm:w-auto flex-grow sm:flex-grow-0">
-                {isLoading ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <Sparkles className="mr-2 h-4 w-4" />
-                )}
-                Analyze Code
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+              Analyze Code
+            </Button>
+          </div>
+        </form>
+      </CardContent>
+    
 
       {isLoading && (
-        <Card className="flex items-center justify-center p-10">
+        <Card className="flex items-center justify-center p-10 mt-6 border-t">
           <Loader2 className="h-12 w-12 animate-spin text-primary" />
           <p className="ml-4 text-lg text-muted-foreground">Analyzing your code, please wait...</p>
         </Card>
       )}
 
       {actionError && !isLoading && (
-         <Card className="border-destructive bg-destructive/10">
+         <Card className="border-destructive bg-destructive/10 mt-6">
           <CardHeader>
             <CardTitle className="text-destructive flex items-center">
               <AlertTriangle className="mr-2 h-5 w-5" />
@@ -174,7 +179,7 @@ export function CodeFixForm() {
       )}
 
       {analysisResult && !isLoading && (
-        <div className="space-y-8">
+        <div className="space-y-8 mt-6 border-t pt-6">
           <Card>
             <CardHeader>
               <CardTitle>Analysis Results</CardTitle>
@@ -210,12 +215,12 @@ export function CodeFixForm() {
             </CardContent>
           </Card>
 
-          <Card className="border-green-500/50 dark:border-green-700/50">
+          <Card className="border-accent/50">
             <CardHeader>
-              <CardTitle className="text-green-700 dark:text-green-400">AI Suggestions</CardTitle>
+              <CardTitle className="text-accent">AI Suggestions</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="whitespace-pre-wrap text-sm font-mono p-3 bg-green-500/10 dark:bg-green-900/20 rounded-md">
+              <p className="whitespace-pre-wrap text-sm font-mono p-3 bg-accent/10 rounded-md">
                 {analysisResult.suggestions}
               </p>
             </CardContent>
@@ -240,6 +245,6 @@ export function CodeFixForm() {
           </Card>
         </div>
       )}
-    </div>
+    </Card>
   );
 }
