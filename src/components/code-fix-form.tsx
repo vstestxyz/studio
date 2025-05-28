@@ -215,12 +215,12 @@ export function CodeFixForm() {
             </CardContent>
           </Card>
 
-          <Card className="border-accent/50">
+          <Card className="border-success/50">
             <CardHeader>
-              <CardTitle className="text-accent">AI Suggestions</CardTitle>
+              <CardTitle className="text-success">AI Suggestions</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="whitespace-pre-wrap text-sm font-mono p-3 bg-accent/10 rounded-md">
+              <p className="whitespace-pre-wrap text-sm font-mono p-3 bg-success/10 rounded-md">
                 {analysisResult.suggestions}
               </p>
             </CardContent>

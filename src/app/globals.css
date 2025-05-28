@@ -24,6 +24,8 @@ body {
     --accent-foreground: 230 50% 95%; /* Light text on accent */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
+    --success: 140 60% 45%; /* Green for success/suggestions */
+    --success-foreground: 140 50% 95%; /* Light text on success */
     --border: 230 30% 85%; /* Slightly darker shade of background */
     --input: 230 30% 85%;
     --ring: 231 48% 48%; /* Primary color for rings */
@@ -62,6 +64,8 @@ body {
     --accent-foreground: 230 15% 15%; /* Dark text on lighter accent */
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
+    --success: 140 60% 55%; /* Lighter green for dark mode success/suggestions */
+    --success-foreground: 140 15% 15%; /* Dark text on lighter success */
     --border: 230 15% 25%;
     --input: 230 15% 25%;
     --ring: 231 48% 52%; /* Lighter primary for rings in dark mode */
