@@ -7,16 +7,16 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { DiffDisplay, type DiffPart } from '@/components/diff-display';
+import { DiffDisplay } from '@/components/diff-display';
 import { useToast } from '@/hooks/use-toast';
 import { UploadCloud, GitCompareArrows, Scale } from 'lucide-react';
-import { diffLines } from 'diff';
+import { diffLines, type Change as DiffChange } from 'diff';
 
 export function CodeCompareForm() {
   const { toast } = useToast();
   const [originalText, setOriginalText] = useState("");
   const [modifiedText, setModifiedText] = useState("");
-  const [diffResult, setDiffResult] = useState<DiffPart[] | null>(null);
+  const [diffResult, setDiffResult] = useState<DiffChange[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const originalFileInputRef = useRef<HTMLInputElement>(null);
@@ -41,21 +41,25 @@ export function CodeCompareForm() {
 
   const handleCompare = () => {
     if (!originalText.trim() && !modifiedText.trim()) {
-      toast({
-        title: "Input Missing",
-        description: "Please provide text in at least one of the input fields.",
-        variant: "destructive",
-      });
-      return;
+      // Allow comparison if one is empty and other is not (treat as all added/removed)
+      if (!originalText.trim() && !modifiedText.trim()) {
+          toast({
+            title: "Input Missing",
+            description: "Please provide text in at least one of the input fields.",
+            variant: "destructive",
+          });
+          return;
+      }
     }
     setIsLoading(true);
-    // Simulate API delay for loading state if needed, otherwise direct diff
+    
     setTimeout(() => {
-      const differences = diffLines(originalText, modifiedText);
-      setDiffResult(differences as DiffPart[]); // Cast because 'diff' library types might not exactly match DiffPart
+      // Ensure empty strings are handled gracefully by diffLines
+      const differences = diffLines(originalText || "", modifiedText || "");
+      setDiffResult(differences as DiffChange[]); 
       setIsLoading(false);
       toast({ title: "Comparison Complete", description: "Differences are highlighted below." });
-    }, 500); // Simulate a short processing time
+    }, 500); 
   };
 
   return (
