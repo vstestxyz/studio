@@ -1,3 +1,4 @@
+
 // src/components/code-fix-form.tsx
 "use client";
 
@@ -13,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { CodeBlock } from '@/components/code-block';
 import { useToast } from '@/hooks/use-toast';
-import { UploadCloud, Copy, Download, Sparkles, Loader2, AlertTriangle, Wrench } from 'lucide-react';
+import { UploadCloud, Copy, Download, Sparkles, Loader2, AlertTriangle, Wrench, Play, Share2 } from 'lucide-react';
 
 const FormSchema = z.object({
   code: z.string().min(1, "Code cannot be empty."),
@@ -105,6 +106,22 @@ export function CodeFixForm() {
     link.click();
     document.body.removeChild(link);
     toast({ title: "Download Started", description: `${fileName} is downloading.` });
+  };
+
+  const handleRunCodePlaceholder = () => {
+    toast({
+      title: "Feature Not Implemented",
+      description: "The 'Run Code' functionality is not yet available.",
+      variant: "default",
+    });
+  };
+
+  const handleShareLinkPlaceholder = () => {
+    toast({
+      title: "Feature Not Implemented",
+      description: "The 'Share Link' functionality is not yet available.",
+      variant: "default",
+    });
   };
 
 
@@ -217,7 +234,7 @@ export function CodeFixForm() {
 
           <Card className="border-success/50">
             <CardHeader>
-              <CardTitle className="text-success">AI Suggestions</CardTitle>
+              <CardTitle className="text-success">Fix Summary &amp; AI Suggestions</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="whitespace-pre-wrap text-sm font-mono p-3 bg-success/10 rounded-md">
@@ -234,12 +251,18 @@ export function CodeFixForm() {
             <CardContent>
               <CodeBlock code={analysisResult.correctedCode} language={analysisResult.language} />
             </CardContent>
-            <CardFooter className="gap-2">
+            <CardFooter className="flex flex-wrap gap-2">
               <Button variant="outline" onClick={() => handleCopyCode(analysisResult.correctedCode, "Corrected")}>
                 <Copy className="mr-2 h-4 w-4" /> Copy Corrected Code
               </Button>
               <Button variant="outline" onClick={() => handleDownloadCode(analysisResult.correctedCode, analysisResult.language)}>
                 <Download className="mr-2 h-4 w-4" /> Download Corrected Code
+              </Button>
+              <Button variant="outline" onClick={handleRunCodePlaceholder}>
+                <Play className="mr-2 h-4 w-4" /> Run Code
+              </Button>
+              <Button variant="outline" onClick={handleShareLinkPlaceholder}>
+                <Share2 className="mr-2 h-4 w-4" /> Share Link
               </Button>
             </CardFooter>
           </Card>
@@ -248,3 +271,4 @@ export function CodeFixForm() {
     </Card>
   );
 }
+
