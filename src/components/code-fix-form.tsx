@@ -110,8 +110,8 @@ export function CodeFixForm() {
 
   const handleRunCodePlaceholder = () => {
     toast({
-      title: "Feature Not Implemented",
-      description: "The 'Run Code' functionality is not yet available.",
+      title: "Notice",
+      description: "This feature is not working yet.",
       variant: "default",
     });
   };
