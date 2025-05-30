@@ -1,3 +1,4 @@
+
 // src/components/diff-display.tsx
 import { cn } from '@/lib/utils';
 import { type Change as DiffChange, diffChars } from 'diff';
@@ -7,7 +8,7 @@ import { type Change as DiffChange, diffChars } from 'diff';
 //   value: string;
 //   added?: boolean;
 //   removed?: boolean;
-//   count?: number; 
+//   count?: number;
 // }
 
 interface DiffDisplayProps {
@@ -62,15 +63,15 @@ export function DiffDisplay({ diff }: DiffDisplayProps) {
 
           const originalLineKey = `orig-mod-${currentOriginalLine}`;
           const modifiedLineKey = `mod-mod-${currentModifiedLine}`;
-          
+
           originalAlignedLines.push(
-            <div key={originalLineKey} className={cn(lineBaseClasses, "bg-yellow-100 dark:bg-yellow-900/30")}>
+            <div key={originalLineKey} className={cn(lineBaseClasses, "bg-yellow-100 dark:bg-yellow-800/20")}>
               <span className="inline-block w-10 pr-2 text-right text-muted-foreground select-none">{currentOriginalLine++}</span>
               <code className="flex-1 break-all whitespace-pre-wrap">
                 {charDiffs.map((charPart, charIdx) => (
                   !charPart.added && ( // Only show original and removed parts on the original side
                     <span key={`${originalLineKey}-char-${charIdx}`} className={cn({
-                      'bg-red-500/50 dark:bg-red-700/60 text-red-950 dark:text-red-200': charPart.removed,
+                      'bg-red-300/50 dark:bg-red-700/40 px-0.5 rounded-sm': charPart.removed,
                     })}>
                       {charPart.value}
                     </span>
@@ -81,13 +82,13 @@ export function DiffDisplay({ diff }: DiffDisplayProps) {
           );
 
           modifiedAlignedLines.push(
-            <div key={modifiedLineKey} className={cn(lineBaseClasses, "bg-yellow-100 dark:bg-yellow-900/30")}>
+            <div key={modifiedLineKey} className={cn(lineBaseClasses, "bg-yellow-100 dark:bg-yellow-800/20")}>
               <span className="inline-block w-10 pr-2 text-right text-muted-foreground select-none">{currentModifiedLine++}</span>
               <code className="flex-1 break-all whitespace-pre-wrap">
                 {charDiffs.map((charPart, charIdx) => (
                   !charPart.removed && ( // Only show original and added parts on the modified side
                     <span key={`${modifiedLineKey}-char-${charIdx}`} className={cn({
-                      'bg-green-500/50 dark:bg-green-700/60 text-green-950 dark:text-green-200': charPart.added,
+                      'bg-green-300/50 dark:bg-green-700/40 px-0.5 rounded-sm': charPart.added,
                     })}>
                       {charPart.value}
                     </span>
@@ -109,7 +110,7 @@ export function DiffDisplay({ diff }: DiffDisplayProps) {
       const keySuffix = `${i}-${lineIndex}`;
       if (part.removed) {
         originalAlignedLines.push(
-          <div key={`orig-rem-${keySuffix}-${currentOriginalLine}`} className={cn(lineBaseClasses, "bg-red-500/20 dark:bg-red-900/30")}>
+          <div key={`orig-rem-${keySuffix}-${currentOriginalLine}`} className={cn(lineBaseClasses, "bg-destructive/20")}>
             <span className="inline-block w-10 pr-2 text-right text-muted-foreground select-none">{currentOriginalLine++}</span>
             <code className="flex-1 break-all whitespace-pre-wrap">{lineContent}</code>
           </div>
@@ -128,7 +129,7 @@ export function DiffDisplay({ diff }: DiffDisplayProps) {
           </div>
         );
         modifiedAlignedLines.push(
-          <div key={`mod-add-${keySuffix}-${currentModifiedLine}`} className={cn(lineBaseClasses, "bg-green-500/20 dark:bg-green-900/30")}>
+          <div key={`mod-add-${keySuffix}-${currentModifiedLine}`} className={cn(lineBaseClasses, "bg-success/20")}>
             <span className="inline-block w-10 pr-2 text-right text-muted-foreground select-none">{currentModifiedLine++}</span>
             <code className="flex-1 break-all whitespace-pre-wrap">{lineContent}</code>
           </div>
