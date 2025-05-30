@@ -15,6 +15,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { CodeBlock } from '@/components/code-block';
 import { useToast } from '@/hooks/use-toast';
 import { UploadCloud, Copy, Download, Sparkles, Loader2, AlertTriangle, Wrench, Play, Share2 } from 'lucide-react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const FormSchema = z.object({
   code: z.string().min(1, "Code cannot be empty."),
@@ -206,7 +207,7 @@ export function CodeFixForm() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Original Code & Detected Errors</CardTitle>
+              <CardTitle>Original Code &amp; Detected Errors</CardTitle>
               {analysisResult.detectedErrors.length === 0 && (
                 <CardDescription>No errors detected in the original code.</CardDescription>
               )}
@@ -218,16 +219,22 @@ export function CodeFixForm() {
                 errors={analysisResult.detectedErrors} 
               />
               {analysisResult.detectedErrors.length > 0 && (
-                <div className="mt-4 space-y-2">
-                  <h4 className="font-semibold">Error Details:</h4>
-                  <ul className="list-disc pl-5 text-sm space-y-1">
-                    {analysisResult.detectedErrors.map((err, idx) => (
-                      <li key={idx} className="text-destructive">
-                        Line {err.line}: [{err.severity}] {err.errorType} - {err.description}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <Accordion type="single" collapsible className="w-full mt-4" defaultValue="error-details">
+                  <AccordionItem value="error-details">
+                    <AccordionTrigger>
+                      <h4 className="font-semibold text-base">Error Details:</h4>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <ul className="list-disc pl-5 text-sm space-y-1 pt-2">
+                        {analysisResult.detectedErrors.map((err, idx) => (
+                          <li key={idx} className="text-destructive">
+                            Line {err.line}: [{err.severity}] {err.errorType} - {err.description}
+                          </li>
+                        ))}
+                      </ul>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
               )}
             </CardContent>
           </Card>
@@ -237,9 +244,18 @@ export function CodeFixForm() {
               <CardTitle className="text-success">Fix Summary &amp; AI Suggestions</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="whitespace-pre-wrap text-sm font-mono p-3 bg-success/10 rounded-md">
-                {analysisResult.suggestions}
-              </p>
+              <Accordion type="single" collapsible className="w-full" defaultValue="ai-suggestions">
+                <AccordionItem value="ai-suggestions">
+                  <AccordionTrigger>
+                    <h4 className="font-semibold text-base">View AI Suggestions Details</h4>
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <p className="whitespace-pre-wrap text-sm font-mono p-3 bg-success/10 rounded-md mt-2">
+                      {analysisResult.suggestions}
+                    </p>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </CardContent>
           </Card>
 
@@ -271,4 +287,3 @@ export function CodeFixForm() {
     </Card>
   );
 }
-
