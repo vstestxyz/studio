@@ -1,8 +1,10 @@
+
 import { CodeFixForm } from '@/components/code-fix-form';
 import { CodeCompareForm } from '@/components/code-compare-form';
+import { CodeRunnerForm } from '@/components/code-runner-form';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Lightbulb, GitCompareArrows } from 'lucide-react';
+import { Lightbulb, GitCompareArrows, TerminalSquare } from 'lucide-react';
 
 export default function HomePage() {
   return (
@@ -15,18 +17,21 @@ export default function HomePage() {
               Code Utility Suite
             </CardTitle>
             <CardDescription>
-              Your intelligent assistant for code correction and comparison.
+              Your intelligent assistant for code correction, comparison, and execution.
             </CardDescription>
           </CardHeader>
         </Card>
 
         <Tabs defaultValue="code-fix" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 md:w-[400px] mb-6">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 md:w-auto mb-6">
             <TabsTrigger value="code-fix" className="flex items-center gap-2">
               <Lightbulb className="h-4 w-4" /> CodeFix AI
             </TabsTrigger>
             <TabsTrigger value="code-compare" className="flex items-center gap-2">
               <GitCompareArrows className="h-4 w-4" /> Text/Code Compare
+            </TabsTrigger>
+            <TabsTrigger value="code-runner" className="flex items-center gap-2">
+              <TerminalSquare className="h-4 w-4" /> Code Runner
             </TabsTrigger>
           </TabsList>
           <TabsContent value="code-fix">
@@ -34,6 +39,9 @@ export default function HomePage() {
           </TabsContent>
           <TabsContent value="code-compare">
             <CodeCompareForm />
+          </TabsContent>
+          <TabsContent value="code-runner">
+            <CodeRunnerForm />
           </TabsContent>
         </Tabs>
       </div>

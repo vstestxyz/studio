@@ -1,9 +1,12 @@
+
 // src/lib/actions.ts
 'use server';
 
 import { detectLanguage, type DetectLanguageOutput } from '@/ai/flows/detect-language';
 import { detectErrors, type DetectErrorsOutput, type DetectErrorsInput } from '@/ai/flows/detect-errors';
 import { suggestCodeFixes, type SuggestCodeFixesOutput, type SuggestCodeFixesInput } from '@/ai/flows/suggest-fixes';
+import { executePistonCode, type ExecuteCodeInput, type ExecuteCodeOutput as ExecuteCodeFlowOutput } from '@/ai/flows/execute-code-flow';
+
 
 export interface AnalysisResult {
   language: string;
@@ -13,9 +16,9 @@ export interface AnalysisResult {
   originalCode: string;
 }
 
-export interface ActionResponse {
+export interface ActionResponse<T = AnalysisResult> {
   success: boolean;
-  data?: AnalysisResult;
+  data?: T;
   error?: string;
 }
 
@@ -28,7 +31,7 @@ function formatErrorsToString(errors: DetectErrorsOutput['errors']): string {
   ).join('\n');
 }
 
-export async function analyzeCode(code: string): Promise<ActionResponse> {
+export async function analyzeCode(code: string): Promise<ActionResponse<AnalysisResult>> {
   if (!code.trim()) {
     return { success: false, error: "Code input cannot be empty." };
   }
@@ -71,5 +74,34 @@ export async function analyzeCode(code: string): Promise<ActionResponse> {
     console.error("Error during code analysis:", e);
     const errorMessage = e instanceof Error ? e.message : "An unknown error occurred during analysis.";
     return { success: false, error: `AI processing failed: ${errorMessage}` };
+  }
+}
+
+
+// Renaming to avoid conflict with the Genkit flow output type
+export type ExecuteCodeOutput = ExecuteCodeFlowOutput;
+
+export async function executeCodeSnippet(input: ExecuteCodeInput): Promise<ActionResponse<ExecuteCodeOutput>> {
+  if (!input.code?.trim()) {
+    return { success: false, error: "Code input cannot be empty." };
+  }
+  if (!input.language?.trim()) {
+    return { success: false, error: "Language must be specified." };
+  }
+   if (!input.files || input.files.length === 0 || !input.files[0].name || !input.files[0].content) {
+    return { success: false, error: "File information is missing or invalid." };
+  }
+
+
+  try {
+    const result: ExecuteCodeOutput = await executePistonCode(input);
+    if (result.pistonError) {
+        return { success: false, error: result.pistonError };
+    }
+    return { success: true, data: result };
+  } catch (e) {
+    console.error("Error executing code snippet:", e);
+    const errorMessage = e instanceof Error ? e.message : "An unknown error occurred during code execution.";
+    return { success: false, error: `Execution failed: ${errorMessage}` };
   }
 }
