@@ -2,10 +2,11 @@
 import { CodeFixForm } from '@/components/code-fix-form';
 import { CodeCompareForm } from '@/components/code-compare-form';
 import { CodeRunnerForm } from '@/components/code-runner-form';
-import { CodeTranslatorForm } from '@/components/code-translator-form'; // Added import
+import { CodeTranslatorForm } from '@/components/code-translator-form';
+import { UnitTestGeneratorForm } from '@/components/unit-test-generator-form'; // Added import
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Lightbulb, GitCompareArrows, TerminalSquare, Languages } from 'lucide-react'; // Added Languages icon
+import { Lightbulb, GitCompareArrows, TerminalSquare, Languages, TestTubeDiagonal } from 'lucide-react'; // Added TestTubeDiagonal icon
 
 export default function HomePage() {
   return (
@@ -18,13 +19,13 @@ export default function HomePage() {
               Code Utility Suite
             </CardTitle>
             <CardDescription>
-              Your intelligent assistant for code correction, comparison, execution, and translation.
+              Your intelligent assistant for code correction, comparison, execution, translation, and unit test generation.
             </CardDescription>
           </CardHeader>
         </Card>
 
         <Tabs defaultValue="code-fix" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-2 md:grid-cols-4 md:w-auto mb-6">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-5 mb-6">
             <TabsTrigger value="code-fix" className="flex items-center gap-2">
               <Lightbulb className="h-4 w-4" /> CodeFix AI
             </TabsTrigger>
@@ -34,8 +35,11 @@ export default function HomePage() {
             <TabsTrigger value="code-runner" className="flex items-center gap-2">
               <TerminalSquare className="h-4 w-4" /> Code Runner
             </TabsTrigger>
-            <TabsTrigger value="code-translator" className="flex items-center gap-2"> {/* Added TabTrigger */}
+            <TabsTrigger value="code-translator" className="flex items-center gap-2">
               <Languages className="h-4 w-4" /> AI Translator
+            </TabsTrigger>
+            <TabsTrigger value="unit-test-generator" className="flex items-center gap-2"> {/* Added TabTrigger */}
+              <TestTubeDiagonal className="h-4 w-4" /> Unit Test Gen
             </TabsTrigger>
           </TabsList>
           <TabsContent value="code-fix">
@@ -47,8 +51,11 @@ export default function HomePage() {
           <TabsContent value="code-runner">
             <CodeRunnerForm />
           </TabsContent>
-          <TabsContent value="code-translator"> {/* Added TabContent */}
+          <TabsContent value="code-translator">
             <CodeTranslatorForm />
+          </TabsContent>
+          <TabsContent value="unit-test-generator"> {/* Added TabContent */}
+            <UnitTestGeneratorForm />
           </TabsContent>
         </Tabs>
       </div>

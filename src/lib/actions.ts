@@ -7,6 +7,7 @@ import { detectErrors, type DetectErrorsOutput, type DetectErrorsInput } from '@
 import { suggestCodeFixes, type SuggestCodeFixesOutput, type SuggestCodeFixesInput } from '@/ai/flows/suggest-fixes';
 import { executePistonCode, type ExecuteCodeInput, type ExecuteCodeOutput as ExecuteCodeFlowOutput } from '@/ai/flows/execute-code-flow';
 import { translateCode as translateCodeFlow, type TranslateCodeInput as TranslateCodeFlowInput, type TranslateCodeOutput as TranslateCodeFlowOutput } from '@/ai/flows/translate-code-flow';
+import { generateUnitTests as generateUnitTestsFlow, type GenerateUnitTestsInput as GenerateUnitTestsFlowInput, type GenerateUnitTestsOutput as GenerateUnitTestsFlowOutput } from '@/ai/flows/generate-unit-tests-flow';
 
 
 export interface AnalysisResult {
@@ -83,18 +84,22 @@ export async function analyzeCode(code: string): Promise<ActionResponse<Analysis
 export type ExecuteCodeOutput = ExecuteCodeFlowOutput;
 export type TranslateCodeInput = TranslateCodeFlowInput;
 export type TranslateCodeOutput = TranslateCodeFlowOutput;
+export type GenerateUnitTestsInput = GenerateUnitTestsFlowInput;
+export type GenerateUnitTestsOutput = GenerateUnitTestsFlowOutput;
 
 
 export async function executeCodeSnippet(input: ExecuteCodeInput): Promise<ActionResponse<ExecuteCodeOutput>> {
-  if (!input.code?.trim()) {
+  if (!input.code?.trim() && (!input.files || input.files.length === 0 || !input.files[0].content?.trim())) {
     return { success: false, error: "Code input cannot be empty." };
   }
   if (!input.language?.trim()) {
     return { success: false, error: "Language must be specified." };
   }
    if (!input.files || input.files.length === 0 || !input.files[0].name || !input.files[0].content) {
-    return { success: false, error: "File information is missing or invalid." };
-  }
+    // This check might be redundant if the first check for code emptiness is handled correctly.
+    // Piston requires files, so ensure content is there.
+     if (!input.code?.trim()) return { success: false, error: "File content is missing or invalid." };
+   }
 
 
   try {
@@ -132,5 +137,26 @@ export async function translateCode(input: TranslateCodeInput): Promise<ActionRe
     console.error("Error translating code:", e);
     const errorMessage = e instanceof Error ? e.message : "An unknown error occurred during code translation.";
     return { success: false, error: `Translation failed: ${errorMessage}` };
+  }
+}
+
+export async function generateUnitTests(input: GenerateUnitTestsInput): Promise<ActionResponse<GenerateUnitTestsOutput>> {
+  if (!input.sourceCode?.trim()) {
+    return { success: false, error: "Source code cannot be empty." };
+  }
+  if (!input.language?.trim()) {
+    return { success: false, error: "Language must be specified." };
+  }
+  if (!input.framework?.trim()) {
+    return { success: false, error: "Testing framework must be specified." };
+  }
+
+  try {
+    const result: GenerateUnitTestsOutput = await generateUnitTestsFlow(input);
+    return { success: true, data: result };
+  } catch (e) {
+    console.error("Error generating unit tests:", e);
+    const errorMessage = e instanceof Error ? e.message : "An unknown error occurred during unit test generation.";
+    return { success: false, error: `Test generation failed: ${errorMessage}` };
   }
 }
