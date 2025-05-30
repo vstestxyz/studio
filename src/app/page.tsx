@@ -2,9 +2,10 @@
 import { CodeFixForm } from '@/components/code-fix-form';
 import { CodeCompareForm } from '@/components/code-compare-form';
 import { CodeRunnerForm } from '@/components/code-runner-form';
+import { CodeTranslatorForm } from '@/components/code-translator-form'; // Added import
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Lightbulb, GitCompareArrows, TerminalSquare } from 'lucide-react';
+import { Lightbulb, GitCompareArrows, TerminalSquare, Languages } from 'lucide-react'; // Added Languages icon
 
 export default function HomePage() {
   return (
@@ -17,13 +18,13 @@ export default function HomePage() {
               Code Utility Suite
             </CardTitle>
             <CardDescription>
-              Your intelligent assistant for code correction, comparison, and execution.
+              Your intelligent assistant for code correction, comparison, execution, and translation.
             </CardDescription>
           </CardHeader>
         </Card>
 
         <Tabs defaultValue="code-fix" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 md:w-auto mb-6">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-2 md:grid-cols-4 md:w-auto mb-6">
             <TabsTrigger value="code-fix" className="flex items-center gap-2">
               <Lightbulb className="h-4 w-4" /> CodeFix AI
             </TabsTrigger>
@@ -32,6 +33,9 @@ export default function HomePage() {
             </TabsTrigger>
             <TabsTrigger value="code-runner" className="flex items-center gap-2">
               <TerminalSquare className="h-4 w-4" /> Code Runner
+            </TabsTrigger>
+            <TabsTrigger value="code-translator" className="flex items-center gap-2"> {/* Added TabTrigger */}
+              <Languages className="h-4 w-4" /> AI Translator
             </TabsTrigger>
           </TabsList>
           <TabsContent value="code-fix">
@@ -42,6 +46,9 @@ export default function HomePage() {
           </TabsContent>
           <TabsContent value="code-runner">
             <CodeRunnerForm />
+          </TabsContent>
+          <TabsContent value="code-translator"> {/* Added TabContent */}
+            <CodeTranslatorForm />
           </TabsContent>
         </Tabs>
       </div>
