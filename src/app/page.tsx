@@ -1,12 +1,12 @@
 
-import { CodeFixForm } from '@/components/code-fix-form';
+import { TestClassGeneratorForm } from '@/components/test-class-generator-form'; // Updated import
 import { CodeCompareForm } from '@/components/code-compare-form';
 import { CodeRunnerForm } from '@/components/code-runner-form';
 import { CodeTranslatorForm } from '@/components/code-translator-form';
-import { UnitTestGeneratorForm } from '@/components/unit-test-generator-form'; // Added import
+import { CodeFixForm } from '@/components/code-fix-form'; // Corrected: was CodeFixForm
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Lightbulb, GitCompareArrows, TerminalSquare, Languages, TestTubeDiagonal } from 'lucide-react'; // Added TestTubeDiagonal icon
+import { Lightbulb, GitCompareArrows, TerminalSquare, Languages, TestTubeDiagonal } from 'lucide-react';
 
 export default function HomePage() {
   return (
@@ -19,7 +19,7 @@ export default function HomePage() {
               Code Utility Suite
             </CardTitle>
             <CardDescription>
-              Your intelligent assistant for code correction, comparison, execution, translation, and unit test generation.
+              Your intelligent assistant for code correction, comparison, execution, translation, and test class generation.
             </CardDescription>
           </CardHeader>
         </Card>
@@ -38,8 +38,8 @@ export default function HomePage() {
             <TabsTrigger value="code-translator" className="flex items-center gap-2">
               <Languages className="h-4 w-4" /> AI Translator
             </TabsTrigger>
-            <TabsTrigger value="unit-test-generator" className="flex items-center gap-2"> {/* Added TabTrigger */}
-              <TestTubeDiagonal className="h-4 w-4" /> Unit Test Gen
+            <TabsTrigger value="test-class-generator" className="flex items-center gap-2"> {/* Updated value and text */}
+              <TestTubeDiagonal className="h-4 w-4" /> Test Class Gen
             </TabsTrigger>
           </TabsList>
           <TabsContent value="code-fix">
@@ -54,8 +54,8 @@ export default function HomePage() {
           <TabsContent value="code-translator">
             <CodeTranslatorForm />
           </TabsContent>
-          <TabsContent value="unit-test-generator"> {/* Added TabContent */}
-            <UnitTestGeneratorForm />
+          <TabsContent value="test-class-generator"> {/* Updated value */}
+            <TestClassGeneratorForm /> {/* Updated component */}
           </TabsContent>
         </Tabs>
       </div>
