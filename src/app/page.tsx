@@ -1,9 +1,9 @@
 
-import { TestClassGeneratorForm } from '@/components/test-class-generator-form'; // Updated import
+import { TestClassGeneratorForm } from '@/components/test-class-generator-form';
 import { CodeCompareForm } from '@/components/code-compare-form';
 import { CodeRunnerForm } from '@/components/code-runner-form';
 import { CodeTranslatorForm } from '@/components/code-translator-form';
-import { CodeFixForm } from '@/components/code-fix-form'; // Corrected: was CodeFixForm
+import { CodeFixForm } from '@/components/code-fix-form';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Lightbulb, GitCompareArrows, TerminalSquare, Languages, TestTubeDiagonal } from 'lucide-react';
@@ -38,24 +38,24 @@ export default function HomePage() {
             <TabsTrigger value="code-translator" className="flex items-center gap-2">
               <Languages className="h-4 w-4" /> AI Translator
             </TabsTrigger>
-            <TabsTrigger value="test-class-generator" className="flex items-center gap-2"> {/* Updated value and text */}
+            <TabsTrigger value="test-class-generator" className="flex items-center gap-2">
               <TestTubeDiagonal className="h-4 w-4" /> Test Class Gen
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="code-fix">
+          <TabsContent value="code-fix" forceMount>
             <CodeFixForm />
           </TabsContent>
-          <TabsContent value="code-compare">
+          <TabsContent value="code-compare" forceMount>
             <CodeCompareForm />
           </TabsContent>
-          <TabsContent value="code-runner">
+          <TabsContent value="code-runner" forceMount>
             <CodeRunnerForm />
           </TabsContent>
-          <TabsContent value="code-translator">
+          <TabsContent value="code-translator" forceMount>
             <CodeTranslatorForm />
           </TabsContent>
-          <TabsContent value="test-class-generator"> {/* Updated value */}
-            <TestClassGeneratorForm /> {/* Updated component */}
+          <TabsContent value="test-class-generator" forceMount>
+            <TestClassGeneratorForm />
           </TabsContent>
         </Tabs>
       </div>
