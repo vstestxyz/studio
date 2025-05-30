@@ -71,7 +71,7 @@ const translateCodeFlow = ai.defineFlow(
     
     const regexLower = new RegExp(`^\\\`\\\`\\\`(${langLower}|${input.targetLanguage})?\\s*\\n?`, 'im');
     const regexUpper = new RegExp(`^\\\`\\\`\\\`(${langUpper}|${input.targetLanguage})?\\s*\\n?`, 'im');
-    const regexEnd = /\n?\`\`\`$/, 'im';
+    const regexEnd = /\n?\`\`\`$/im; // Corrected line
 
     translated = translated.replace(regexLower, '');
     translated = translated.replace(regexUpper, '');
@@ -80,3 +80,4 @@ const translateCodeFlow = ai.defineFlow(
     return { translatedCode: translated.trim() };
   }
 );
+
