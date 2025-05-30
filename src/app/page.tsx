@@ -1,5 +1,5 @@
 
-import { TestClassGeneratorForm } from '@/components/test-class-generator-form'; // Updated import
+import { TestClassGeneratorForm } from '@/components/test-class-generator-form';
 import { CodeCompareForm } from '@/components/code-compare-form';
 import { CodeRunnerForm } from '@/components/code-runner-form';
 import { CodeTranslatorForm } from '@/components/code-translator-form';
@@ -42,19 +42,19 @@ export default function HomePage() {
               <TestTubeDiagonal className="h-4 w-4" /> Test Class Gen
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="code-fix">
+          <TabsContent value="code-fix" forceMount>
             <CodeFixForm />
           </TabsContent>
-          <TabsContent value="code-compare">
+          <TabsContent value="code-compare" forceMount>
             <CodeCompareForm />
           </TabsContent>
-          <TabsContent value="code-runner">
+          <TabsContent value="code-runner" forceMount>
             <CodeRunnerForm />
           </TabsContent>
-          <TabsContent value="code-translator">
+          <TabsContent value="code-translator" forceMount>
             <CodeTranslatorForm />
           </TabsContent>
-          <TabsContent value="test-class-generator">
+          <TabsContent value="test-class-generator" forceMount>
             <TestClassGeneratorForm />
           </TabsContent>
         </Tabs>
